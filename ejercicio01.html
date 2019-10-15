@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Listas de Reproducción</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="estilosbt.css">
+</head>
+<body>
+<div class="container bg-dark text-light p-2 mb-1"><h3>Elige un Album</h3></div>
+<div class="container bg-light text-warning">
+	<div class="row p-4 bg-secondary">
+		<div class="col-2">
+			<input type="radio" name="tipo" id="coldplay" onclick="listar(0)" checked>
+			<label class="pl-2" for="coldplay">Cold Play</label>
+		</div>
+		<div class="col-2">
+			<input type="radio" name="tipo" id="lord" onclick="listar(1)">
+			<label class="pl-2" for="lord">Lorde</label>
+		</div>
+		<div class="col-2">
+			<input type="radio" name="tipo" id="zoe" onclick="listar(2)">
+			<label class="pl-2" for="zoe">Zoe</label>
+		</div>	
+	</div>
+</div>
+<div class="container bg-light" style="border:thin solid gray">
+	<h3 class="text-info m-2">Canciones:</h3>
+	<div id="resultado">
+	</div>
+	<div class="container m-1 btn-group">
+		<button class="btn btn-lg btn-outline-secondary p-2" onclick="back()">Back</button>
+		<button class="btn btn-lg btn-outline-primary p-2" onclick="next()">Next</button>
+	</div>
+	<div class="container m-1 p-2">
+		<audio controls id="musica" src="">	
+		</audio>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var coldplay=["ColdPlay-42.mp3", "ColdPlay-amessage.mp3","ColdPlay-greeneyes.mp3"];
+	var lorde=["Lorde-Royals.mp3","Lorde-Team.mp3"];
+	var zoe=["Zoe-nunca.mp3","Zoe-paula.mp3","Zoe-soñe.mp3","Zoe-labiosRotos.mp3"];
+	var opciones=[coldplay,lorde,zoe];
+	var colores=["text-success","text-danger","text-warning"];
+	listar(0);
+	function listar(n){
+		var html="<ul class='list-group'>";
+		for(var ind=0;ind<opciones[n].length;ind++){
+			html= html + "<li class='list-group-item'>" + opciones[n][ind] + "</li>";
+		}
+		html = html + "</ul>";
+		document.getElementById("resultado").innerHTML=html;
+		document.getElementById("resultado").setAttribute("class","container " + colores[n]);
+		
+		indice = 0;
+		items=document.getElementById("resultado").getElementsByTagName("li");
+		activar(indice);
+	}
+	var indice;
+	var items;
+	function desactivar(quien){
+		items[quien].setAttribute("class","list-group-item");
+	}
+	function activar(quien){
+		items[indice].setAttribute("class","list-group-item bg-dark text-white");
+		play(indice);
+	}
+
+	function play(quien){
+		var a = items[quien].innerHTML;
+		document.getElementById("musica").src="musica/" + a;//nombre del archivo mp3 correspondiente;
+		document.getElementById("musica").setAttribute("autoplay","");
+	}
+	function next(){
+		desactivar(indice);
+		indice = (indice==items.length-1? 0 : indice+1);
+		activar(indice);
+	}
+	function back(){
+		desactivar(indice);
+		indice = (indice==0? items.length-1: indice-1);
+		activar(indice);
+	}
+</script>
+</body>
+</html>
